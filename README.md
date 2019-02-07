@@ -1,2 +1,2 @@
 # MMM-SL-Deviations
-SL trafic deviations in Stockholm
+SL traffic deviations in Stockholm
