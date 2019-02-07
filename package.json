@@ -1,0 +1,16 @@
+{
+  "name": "mmm-sl-deviations",
+  "version": "1.0.0",
+  "description": "Get deviations in Stockholm trafic (SL)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "theresia.sofia.snow@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "moment": "^2.24.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5"
+  }
+}
