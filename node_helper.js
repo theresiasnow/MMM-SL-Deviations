@@ -14,13 +14,14 @@
 const moment = require("moment");
 const NodeHelper = require("node_helper");
 const Deviations = require("./deviations.js");
+const Logging = require("./logging.js");
 
-var isDebug = true;
+var isDebug = false;
 
 module.exports = NodeHelper.create({
 
   start: function () {
-    log("Starting helper: " + this.name);
+    Logging.log("Starting helper: " + this.name);
     this.started = false;
   },
 
@@ -35,21 +36,17 @@ module.exports = NodeHelper.create({
 
   getDeviations: function() {
     var self = this;
-
-    debug("getDeviations");
-
-    clearInterval(this.updatetimer);
-
     const url = "http://api.sl.se/api2/deviations.json";
     const apikey = this.config.apikey;
     const transportMode = this.config.transportMode;
     const line = this.config.line;
-    // TODO: set dynamically
-    const fromDate = "2019-02-07";
-    const toDate = "2019-02-07";
+    const now = moment().format("YYYY-MM-DD");
+    const fromDate = now;
+    const toDate = now;
 
+    clearInterval(this.updatetimer);
     Deviations.getDeviations(url, apikey, transportMode, line, fromDate, toDate).then((deviations) => {
-      console.log("sending update");
+      Logging.log("sending update");
       self.sendSocketNotification("DEVIATIONS", deviations); // Send deviations to module
     });
     self.scheduleUpdate();
@@ -66,18 +63,8 @@ module.exports = NodeHelper.create({
         self.getDeviations(); // First time
     };
   }
-
 });
 
-// Logging
-function logPrefix() {
-  return moment().format("YYYY:mm:DD HH:mm:ss") + ": MMM-SL-deviances: ";
-}
-
-function log(message) {
-  console.log(logPrefix() + message);
-}
-
 function debug(message) {
-  if (isDebug) {log(message);}
+  if (isDebug) { Logging.log(message); }
 }

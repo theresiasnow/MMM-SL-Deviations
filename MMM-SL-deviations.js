@@ -21,10 +21,14 @@ Module.register("MMM-SL-deviations",{
         var div = document.createElement("div");
         header = document.createElement("div");
         header.innerHTML = deviation.header;
+        time = document.createElement("div");
+        time.className = "light small dimmed";
+        time.innerHTML = deviation.created;
         details = document.createElement("div");
         details.className = "light small dimmed";
         details.innerHTML = deviation.details;
         div.appendChild(header);
+        div.appendChild(time);
         div.appendChild(details);
         wrapper.appendChild(div);
        }
@@ -68,15 +72,4 @@ Module.register("MMM-SL-deviations",{
     }
   }
 });
-
-// Utilities
-function createRow(data) {
-  var tr = document.createElement("tr");
-  tr.className = "sup";
-  var td = document.createElement("td");
-  td.className = "align-left";
-  td.innerHTML = data;
-  tr.appendChild(td);
-  return tr;
-}
 
