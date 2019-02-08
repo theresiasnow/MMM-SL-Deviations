@@ -10,48 +10,47 @@ Module.register("MMM-SL-deviations",{
     fade: true,
     fadePoint: 0.2,
     displaycount: 10,
-  },
-
-	// Override dom generator.
-	getDom: function() {
-    var wrapper = document.createElement("div");
-    wrapper.className = "small bright";
-    if(this.deviations !== undefined) {
-      for (const deviation of this.deviations) {
-        var div = document.createElement("div");
-        header = document.createElement("div");
-        header.innerHTML = deviation.header;
-        time = document.createElement("div");
-        time.className = "light small dimmed";
-        time.innerHTML = deviation.created;
-        details = document.createElement("div");
-        details.className = "light small dimmed";
-        details.innerHTML = deviation.details;
-        div.appendChild(header);
-        div.appendChild(time);
-        div.appendChild(details);
-        wrapper.appendChild(div);
-       }
-    } else {
-      Log.info("no deviations");
-    }
-    return wrapper;
-  },
-
-  getHeader: function() {
-    return this.data.header;
+    divClass: "small bright",
+    headerClass: "",
+    createdClass: "light small dimmed",
+    detailsClass: "light small dimmed"
   },
 
   start: function() {
     var self = this;
     Log.log(this.name + "is started!");
 
-    this.uitimer = setInterval(function () { // This timer is saved in uitimer so that we can cancel it
+    this.loaded = false;
+    this.deviations = [];
+
+    this.uitimer = setInterval(function () {
       self.updateDom();
     }, self.config.uiUpdateInterval);
 
-    this.sendSocketNotification("CONFIG", this.config); // Send config to helper and initiate an update
+    // Send config to helper and initiate an update
+    this.sendSocketNotification("CONFIG", this.config);
   },
+
+  getHeader: function() {
+    return this.data.header;
+  },
+
+  getStyles: function() {
+    return ["MMM-SL-Deviations.css"];
+  },
+
+	getTemplate: function () {
+		return "MMM-SL-Deviations.njk";
+	},
+
+	// Add all the data to the template.
+	getTemplateData: function () {
+		return {
+      loaded: this.loaded,
+			config: this.config,
+			deviations: this.deviations
+		}
+	},
 
   // Handle socketnotifications
   socketNotificationReceived: function (notification, payload) {
@@ -59,9 +58,7 @@ Module.register("MMM-SL-deviations",{
         Log.info("update received");
         this.loaded = true;
         this.failure = undefined;
-        // Handle payload
         this.deviations = payload;
-        this.deviations.obtained = new Date();
         this.updateDom();
     }
     if (notification == "SERVICE_FAILURE") {
@@ -72,4 +69,3 @@ Module.register("MMM-SL-deviations",{
     }
   }
 });
-

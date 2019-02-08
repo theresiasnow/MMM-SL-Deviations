@@ -2,7 +2,7 @@ const request = require("request-promise-native");
 const moment = require("moment");
 const Logging = require("./logging.js");
 
-const dateformat = "YYYY-MM-DD HH:mm:ss";
+const dateformat = "YYYY-MM-DD HH:mm";
 
 class Deviation {
   constructor(scope, created, updated, fromDate, toDate, header, details) {
@@ -17,7 +17,7 @@ class Deviation {
 }
 
 function getDeviations(url, apikey, transportMode, lineNumber, fromDate, toDate) {
-  log("Getting trafic deviations from " + fromDate + " to " + toDate);
+  Logging.log("Getting trafic deviations from " + fromDate + " to " + toDate);
 
   var options = {
     uri: url,
@@ -54,19 +54,6 @@ function parseDeviations(response) {
     ));
   }
   return arr;
-}
-
-// Logging
-function logPrefix() {
-  return moment().format("YYYY:mm:DD HH:mm:ss") + ": MMM-SL-deviances: ";
-}
-
-function log(message) {
-  console.log(logPrefix() + message);
-}
-
-function debug(message) {
-  if (isDebug) {log(message);}
 }
 
 module.exports = {

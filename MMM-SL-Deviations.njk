@@ -1,0 +1,14 @@
+{% if loaded and deviations %}
+    <div id="MMM-SL-Deviations" class="{{config.divClass}}">
+        {% for deviation in deviations %}
+            <div id="header" class="{{config.headerClass}}">
+                {{deviation.created}} {{deviation.header}}
+            </div>
+            <div id="details" class="{{config.detailsClass}}">
+                {{deviation.details}}
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    {{"LOADING" | translate}}
+{% endif %}
