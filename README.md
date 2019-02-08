@@ -16,7 +16,7 @@ Get an API key from Trafiklab for API https://www.trafiklab.se/api/sl-storningsi
 
 ```javascript
 
-modules: [ 
+modules: [
 ...
     {
       module: "MMM-SL-deviations",
@@ -27,7 +27,11 @@ modules: [
         uiUpdateInterval: 5000,
         apikey: "your api key",
         transportMode: <transportmode>, // ie train
-        line: <line> // ie. 43
+        line: <line>, // ie. 43
+        divClass: "small bright",
+        headerClass: "",
+        createdClass: "light small dimmed",
+        detailsClass: "light small dimmed"
       }
     },
 ]
